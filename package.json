@@ -10,7 +10,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "{server,app/src}/*.{js,jsx}": "npx prettier --write"
+    "*.{js,jsx}": "npx prettier --write"
   },
   "author": "",
   "license": "ISC",
