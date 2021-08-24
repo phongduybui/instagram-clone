@@ -1,21 +1,28 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-
+import validator from 'validator';
 const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, 'Please enter name!'],
     },
     email: {
       type: String,
-      required: true,
-      unique: true,
+      required: [true, 'Provide email'],
+      unique: [true, 'Email is exist'],
+      validate: [validator.isEmail, 'invalid Email'],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, 'Must have a password'],
     },
+    avatar: {
+      type: String,
+      default:
+        'https://1.bp.blogspot.com/-A7UYXuVWb_Q/XncdHaYbcOI/AAAAAAAAZhM/hYOevjRkrJEZhcXPnfP42nL3ZMu4PvIhgCLcBGAsYHQ/s1600/Trend-Avatar-Facebook%2B%25281%2529.jpg',
+    },
+    post: [],
     isAdmin: {
       type: Boolean,
       required: true,

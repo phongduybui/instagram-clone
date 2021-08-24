@@ -1,30 +1,40 @@
 import User from '../models/userModel.js';
-import asyncHandler from 'express-async-handler';
 
-// Just an example, remove it if have error
+const signIn = async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = await User.create(req.body);
 
-/**
- * @desc    Authenticate user & get token
- * @route   POST /api/users/login
- * @access  Public
- */
-const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-
-  if (user && (await user.matchPassword(password))) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user._id),
+    res.status(200).json({
+      status: 'Success',
+      data: {
+        user,
+      },
     });
-  } else {
-    res.status(401);
-    throw new Error('Invalid email or password');
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err,
+    });
   }
-});
+};
 
-export { authUser };
+const getUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({
+      status: 'Success',
+      result: users.length,
+      data: {
+        users,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err,
+    });
+  }
+};
+
+export { signIn, getUser };
